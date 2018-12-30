@@ -29,6 +29,7 @@ kitchen tests debian:
   - amd64
   script:
   - bundle exec kitchen test debian
+  - bundle exec kitchen destroy
 
 kitchen tests ubuntu:
   tags:
@@ -36,6 +37,7 @@ kitchen tests ubuntu:
   - amd64
   script:
   - bundle exec kitchen test ubuntu
+  - bundle exec kitchen destroy
 
 kitchen tests centos:
   tags:
@@ -43,10 +45,4 @@ kitchen tests centos:
   - amd64
   script:
   - bundle exec kitchen test centos
-
-kitchen tests amazon:
-  tags:
-  - privileged
-  - amd64
-  script:
-  - bundle exec kitchen test amazon
+  - bundle exec kitchen destroy

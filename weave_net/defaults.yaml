@@ -1,0 +1,9 @@
+---
+version: latest_release
+log_level: warning
+peers:
+  addresses: ~
+  mine: "public_ipaddrs"
+  target: "*"
+  target_type: "glob"
+secrets: {}

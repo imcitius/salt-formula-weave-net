@@ -1,0 +1,7 @@
+---
+
+Debian:
+  env_file: /etc/default/weave
+
+RedHat:
+  env_file: /etc/sysconfig/weave

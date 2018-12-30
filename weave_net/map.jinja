@@ -1,0 +1,7 @@
+{% import_yaml "weave_net/defaults.yaml" as defaults %}
+{% import_yaml "weave_net/osfamilymap.yaml" as osfamilymap %}
+
+{% set _os_lookup = salt["grains.filter_by"](osfamilymap, grain="os_family") %}
+{% set lookup = salt.pillar.get("weave_net:lookup", default=_os_lookup, merge=true) %}
+
+{% set weave_net = salt.pillar.get("weave_net", default=defaults, merge=true) %}}

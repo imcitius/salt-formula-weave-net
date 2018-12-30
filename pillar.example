@@ -1,0 +1,33 @@
+#!jinja|yaml
+
+weave_net:
+  version: 2.5.0
+
+  # `log_level` valid values: debug info warning error
+  log_level: warning
+
+  peers:
+    # If you choose to omit the `mine_functions` stanza, provide a static list
+    # of peers
+    addresses: []
+    # Or if you choose to include the `mine_functions` stanza, provide
+    # a Salt `mine.get` `target` and `target_type` value:
+    # https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.mine.html#salt.modules.mine.get
+    target: "*"
+    target_type: "glob"
+    # Select which mine function to use
+    mine_name: "public_ipaddrs"
+
+  secrets:
+    encrypt: "super long encrypt secret"
+
+# Install these mine functions so this formula can provide a set of peers to Weave Net
+mine_functions:
+  public_ipaddrs:
+    mine_function: network.ip_addrs
+    include_loopback: false
+    type: public
+  public_ipaddrs6:
+    mine_function: network.ip_addrs6
+    include_loopback: false
+    type: public

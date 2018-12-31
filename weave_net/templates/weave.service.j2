@@ -6,7 +6,7 @@ After=docker.service
 
 [Service]
 EnvironmentFile=-{{ env_file }}
-ExecStartPre=/usr/local/bin/weave launch --no-restart $PEERS --log-level $LOG_LEVEL
+ExecStartPre=/usr/local/bin/weave launch --log-level $LOG_LEVEL --no-restart $PEERS
 ExecStart=/usr/bin/docker attach weave
 ExecStop=/usr/local/bin/weave stop
 

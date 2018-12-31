@@ -1,0 +1,95 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+  privileged: true
+  run_command: /sbin/init
+  provision_command:
+    - curl -L https://bootstrap.saltstack.com | sh -s -- -X     # install Salt and dependencies here to make use of Docker build cache, speeding up tests massively
+
+verifier:
+  name: inspec
+
+provisioner:
+  name: salt_solo
+  salt_version: latest
+  log_level: info
+  require_chef: false
+  formula: weave_net
+
+platforms:
+  - name: debian-8
+    driver:
+      name: docker
+      socket: tcp://dind:2375
+      privileged: true
+      provision_command:
+        - apt-get install -y locales net-tools && locale-gen en_US.UTF-8
+        - apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+        - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+        - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+        - apt-get update
+        - apt-get install -y docker-ce
+        - mkdir /etc/docker
+        - echo '{"storage-driver":"vfs"}' > /etc/docker/daemon.json
+        - curl -L https://bootstrap.saltstack.com | sh -s -- -X
+  - name: ubuntu-16.04
+    driver:
+      name: docker
+      socket: tcp://dind:2375
+      privileged: true
+      provision_command:
+        - apt-get install -y locales net-tools && locale-gen en_US.UTF-8
+        - apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+        - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - apt-get update
+        - apt-get install -y docker-ce
+        - sed -i.bk -e "s/ExecStartPre=\/sbin\/modprobe/ExecStartPre=-\/sbin\/modprobe/" /lib/systemd/system/containerd.service
+        - curl -L https://bootstrap.saltstack.com | sh -s -- -X
+  - name: centos-7
+    driver:
+      name: docker
+      socket: tcp://dind:2375
+      privileged: true
+      provision_command:
+        - yum -y install net-tools    # needed by inspec
+        - yum -y install yum-utils device-mapper-persistent-data lvm2
+        - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        - yum -y install docker-ce
+        - mkdir /etc/docker
+        - echo '{"storage-driver":"vfs"}' > /etc/docker/daemon.json
+        - sed -i.bk -e "s/ExecStartPre=\/sbin\/modprobe/ExecStartPre=-\/sbin\/modprobe/" /lib/systemd/system/containerd.service
+        - curl -L https://bootstrap.saltstack.com | sh -s -- -X
+
+suites:
+  - name: install_binary
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - weave_net.install
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - weave_net
+        weave_net.sls:
+          weave_net:
+            version: v2.5.0
+  - name: service_running
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - weave_net
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - weave_net
+        weave_net.sls:
+          weave_net:
+            version: v2.5.0
+            secrets:
+              encrypt: "secret"

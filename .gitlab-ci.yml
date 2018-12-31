@@ -8,6 +8,7 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
+  KITCHEN_YAML: "${CI_PROJECT_DIR}/kitchen.ci.yml"
 
 # Cache gems in between builds
 cache:
@@ -27,21 +28,21 @@ kitchen tests debian:
   - privileged
   - amd64
   script:
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test debian
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy
+  - bundle exec kitchen test debian
+  - bundle exec kitchen destroy
 
 kitchen tests ubuntu:
   tags:
   - privileged
   - amd64
   script:
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test ubuntu
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy
+  - bundle exec kitchen test ubuntu
+  - bundle exec kitchen destroy
 
 kitchen tests centos:
   tags:
   - privileged
   - amd64
   script:
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test centos
-  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy
+  - bundle exec kitchen test centos
+  - bundle exec kitchen destroy

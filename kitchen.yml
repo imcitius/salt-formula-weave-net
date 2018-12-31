@@ -74,6 +74,21 @@ suites:
         weave_net.sls:
           weave_net:
             version: v2.5.0
+  - name: service_configured
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - weave_net.install
+            - weave_net.config
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - weave_net
+        weave_net.sls:
+          weave_net:
+            version: v2.5.0
   - name: service_running
     provisioner:
       state_top:

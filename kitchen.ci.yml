@@ -25,13 +25,6 @@ platforms:
       privileged: true
       provision_command:
         - apt-get install -y locales net-tools && locale-gen en_US.UTF-8
-        - apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-        - curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-        - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-        - apt-get update
-        - apt-get install -y docker-ce
-        - mkdir /etc/docker
-        - echo '{"storage-driver":"vfs"}' > /etc/docker/daemon.json
         - curl -L https://bootstrap.saltstack.com | sh -s -- -X
   - name: ubuntu-16.04
     driver:
@@ -40,12 +33,6 @@ platforms:
       privileged: true
       provision_command:
         - apt-get install -y locales net-tools && locale-gen en_US.UTF-8
-        - apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-        - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - apt-get update
-        - apt-get install -y docker-ce
-        - sed -i.bk -e "s/ExecStartPre=\/sbin\/modprobe/ExecStartPre=-\/sbin\/modprobe/" /lib/systemd/system/containerd.service
         - curl -L https://bootstrap.saltstack.com | sh -s -- -X
   - name: centos-7
     driver:
@@ -54,12 +41,6 @@ platforms:
       privileged: true
       provision_command:
         - yum -y install net-tools    # needed by inspec
-        - yum -y install yum-utils device-mapper-persistent-data lvm2
-        - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        - yum -y install docker-ce
-        - mkdir /etc/docker
-        - echo '{"storage-driver":"vfs"}' > /etc/docker/daemon.json
-        - sed -i.bk -e "s/ExecStartPre=\/sbin\/modprobe/ExecStartPre=-\/sbin\/modprobe/" /lib/systemd/system/containerd.service
         - curl -L https://bootstrap.saltstack.com | sh -s -- -X
 
 suites:
@@ -77,12 +58,13 @@ suites:
         weave_net.sls:
           weave_net:
             version: v2.5.0
-  - name: service_running
+  - name: service_configured
     provisioner:
       state_top:
         base:
           '*':
-            - weave_net
+            - weave_net.install
+            - weave_net.config
       pillars:
         top.sls:
           base:
@@ -91,5 +73,3 @@ suites:
         weave_net.sls:
           weave_net:
             version: v2.5.0
-            secrets:
-              encrypt: "secret"

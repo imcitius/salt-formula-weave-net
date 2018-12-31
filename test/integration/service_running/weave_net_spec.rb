@@ -13,16 +13,6 @@ describe command('/usr/local/bin/weave version') do
   its(:stdout) { should match(/^weave script 2.5.0/) }
 end
 
-['/etc/default/weave', '/etc/sysconfig/weave'].each do |filename|
-  if file(filename).exist?
-    describe file(filename) do
-      it { should be_a_file }
-      its(:content) { should match(/WEAVE_PASSWORD='secret'/) }
-      its(:content) { should match(/LOG_LEVEL='warning'/) }
-    end
-  end
-end
-
 describe command('/usr/local/bin/weave status') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/Version: 2.5.0/) }

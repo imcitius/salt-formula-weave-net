@@ -21,8 +21,6 @@ write systemd weave.service:
     - template: jinja
     - context:
         env_file: {{ lookup.env_file | yaml_squote }}
-
-reload systemd units:
   module.run:
     - name: service.systemctl_reload
     - onchanges:

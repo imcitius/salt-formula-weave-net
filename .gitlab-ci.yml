@@ -8,7 +8,6 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
-  DOCKER_HOST: tcp://dind:2375/
 
 # Cache gems in between builds
 cache:
@@ -28,21 +27,21 @@ kitchen tests debian:
   - privileged
   - amd64
   script:
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test debian
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test debian
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy
 
 kitchen tests ubuntu:
   tags:
   - privileged
   - amd64
   script:
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test ubuntu
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test ubuntu
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy
 
 kitchen tests centos:
   tags:
   - privileged
   - amd64
   script:
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test centos
-  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen test centos
+  - DOCKER_HOST=tcp://dind:2375 bundle exec kitchen destroy

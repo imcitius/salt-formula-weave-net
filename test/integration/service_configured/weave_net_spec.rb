@@ -17,8 +17,8 @@ end
   if file(filename).exist?
     describe file(filename) do
       it { should be_a_file }
-      its(:content) { should match(/WEAVE_PASSWORD='secret'/) }
-      its(:content) { should match(/LOG_LEVEL='warning'/) }
+      its(:content) { should match(/WEAVE_PASSWORD="secret"/) }
+      its(:content) { should match(/LOG_LEVEL="warning"/) }
     end
   end
 end

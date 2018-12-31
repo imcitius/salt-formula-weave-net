@@ -73,3 +73,5 @@ suites:
         weave_net.sls:
           weave_net:
             version: v2.5.0
+            secrets:
+              encrypt: secret

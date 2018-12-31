@@ -1,5 +1,5 @@
 {% if secrets.encrypt is defined -%}
-WEAVE_PASSWORD={{ secrets.encrypt | yaml_squote }}
+WEAVE_PASSWORD={{ secrets.encrypt | yaml_dquote }}
 {%- endif %}
 PEERS="{% for _, peer in peers.items() %}{{ peer | first }} {% endfor %}"
-LOG_LEVEL={{ log_level | yaml_squote }}
+LOG_LEVEL={{ log_level | yaml_dquote }}

@@ -2,13 +2,9 @@
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/ruby/tags/
 image: "containers.dev.maio.me/saltbox/docker-kitchen:latest"
-services:
-  - name: containers.dev.maio.me/sjohnson/containers/docker:dind
-    alias: dind
 
 variables:
-  DOCKER_DRIVER: overlay
-  DOCKER_HOST: tcp://dind:2375/
+  DOCKER_DRIVER: vfs
 
 # Cache gems in between builds
 cache:

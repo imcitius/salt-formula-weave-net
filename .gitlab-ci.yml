@@ -2,9 +2,13 @@
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/ruby/tags/
 image: "containers.dev.maio.me/saltbox/docker-kitchen:latest"
+services:
+  - name: containers.dev.maio.me/sjohnson/containers/docker:dind
+    alias: dind
 
 variables:
-  DOCKER_DRIVER: vfs
+  DOCKER_DRIVER: overlay
+  DOCKER_HOST: tcp://dind:2375/
 
 # Cache gems in between builds
 cache:
@@ -24,21 +28,21 @@ kitchen tests debian:
   - privileged
   - amd64
   script:
-  - bundle exec kitchen test debian
-  - bundle exec kitchen destroy
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test debian
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy
 
 kitchen tests ubuntu:
   tags:
   - privileged
   - amd64
   script:
-  - bundle exec kitchen test ubuntu
-  - bundle exec kitchen destroy
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test ubuntu
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy
 
 kitchen tests centos:
   tags:
   - privileged
   - amd64
   script:
-  - bundle exec kitchen test centos
-  - bundle exec kitchen destroy
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen test centos
+  - bundle exec DOCKER_HOST=tcp://dind:2375 kitchen destroy

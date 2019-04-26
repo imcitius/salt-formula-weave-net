@@ -8,6 +8,8 @@ After=docker.service
 EnvironmentFile=-{{ env_file }}
 ExecStartPre=/usr/local/bin/weave launch --log-level $LOG_LEVEL --no-restart $PEERS
 ExecStart=/usr/bin/docker attach weave
+{% if weave_net.assign_host_address %}ExecStartPost=/usr/local/bin/weave expose
+{% endif %}
 ExecStop=/usr/local/bin/weave stop
 
 [Install]

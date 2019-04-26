@@ -1,0 +1,22 @@
+---
+
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: containers.dev.maio.me/library/kitchen
+    tag: latest
+
+params:
+  PLATFORM:
+
+inputs:
+- name: formula
+
+caches:
+- path: vendor
+
+run:
+  path: ci/tasks/kitchen.sh
+  dir: formula

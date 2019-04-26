@@ -1,7 +1,7 @@
 #!jinja|yaml
 
 weave_net:
-  version: 2.5.0
+  version: 2.5.1
 
   # `log_level` valid values: debug info warning error
   log_level: warning
@@ -20,6 +20,9 @@ weave_net:
 
   secrets:
     encrypt: "super long encrypt secret"
+
+  # Choose whether Weave should assign the host a network address (weave expose)
+  assign_host_address: true
 
 # Install these mine functions so this formula can provide a set of peers to Weave Net
 mine_functions:

@@ -1,6 +1,12 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "test-kitchen"
-gem "kitchen-docker"
-gem "kitchen-salt"
-gem 'kitchen-inspec'
+group :kitchen do
+    gem 'test-kitchen'
+    gem 'kitchen-docker'
+    gem 'kitchen-inspec'
+    gem 'kitchen-salt'
+end
+
+group :formula do
+    # Put any dependencies needed by the formula tests here.
+end

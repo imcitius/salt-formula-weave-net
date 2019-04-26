@@ -24,7 +24,7 @@ systemd_unit = "/lib/systemd/system/weave.service"
 if file(systemd_unit).exist?
   describe file(systemd_unit) do
     it { should be_a_file }
-    its(:content) { should match(/ExecStartPost=\/usr\/local\/bin\/weave expose/) }
+    its(:content) { should_not match(/ExecStartPost=\/usr\/local\/bin\/weave expose/) }
   end
 
   describe file("#{systemd_unit}.d") do

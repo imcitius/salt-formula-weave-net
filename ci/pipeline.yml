@@ -1,0 +1,43 @@
+---
+
+resources:
+- name: formula
+  type: git
+  source:
+    uri: https://glow.dev.maio.me/saltbox-formulas/weave-net.git
+    branch: master
+
+jobs:
+- name: "kitchen-integration-centos"
+  serial_groups: [kitchen]
+  public: true
+  plan:
+  - get: formula
+    trigger: true
+  - task: "run-kitchen-integration-centos"
+    file: formula/ci/tasks/kitchen.yml
+    privileged: true
+    params:
+      PLATFORM: centos
+- name: "kitchen-integration-debian"
+  serial_groups: [kitchen]
+  public: true
+  plan:
+  - get: formula
+    trigger: true
+  - task: "run-kitchen-integration-debian"
+    file: formula/ci/tasks/kitchen.yml
+    privileged: true
+    params:
+      PLATFORM: debian
+- name: "kitchen-integration-ubuntu"
+  serial_groups: [kitchen]
+  public: true
+  plan:
+  - get: formula
+    trigger: true
+  - task: "run-kitchen-integration-ubuntu"
+    file: formula/ci/tasks/kitchen.yml
+    privileged: true
+    params:
+      PLATFORM: ubuntu

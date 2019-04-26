@@ -7,3 +7,4 @@ peers:
   target: "*"
   target_type: "glob"
 secrets: {}
+assign_host_address: true

@@ -1,8 +1,9 @@
 meta:
-  name:     weave-net-formula
   target:   glow
   url:      https://concourse.dev.maio.me
-  team:     main
+  team:     saltbox-formulas
+
+  name:     weave-net-formula
   pipeline: weave-net-formula
 
   registry:
@@ -10,3 +11,8 @@ meta:
     auth:
       username: ((glow_registry_ci.username))
       password: ((glow_registry_ci.password))
+
+  formula:
+    source:
+      uri: https://glow.dev.maio.me/saltbox-formulas/weave-net.git
+      branch: master

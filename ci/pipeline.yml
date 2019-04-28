@@ -4,8 +4,8 @@ resources:
 - name: formula
   type: git
   source:
-    uri: https://glow.dev.maio.me/saltbox-formulas/weave-net.git
-    branch: master
+    uri: (( grab meta.formula.source.uri ))
+    branch: (( grab meta.formula.source.branch ))
 
 jobs:
 - name: "kitchen-integration-centos"
